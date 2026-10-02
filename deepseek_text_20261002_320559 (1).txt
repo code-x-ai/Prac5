@@ -1,0 +1,69 @@
+================================================================================
+PRACTICAL 5: Usage of Docker
+================================================================================
+
+AIM:
+To build and run a Docker image as a container and share the image using Docker Hub.
+
+THEORY:
+Docker packages software into standardized units called containers that have everything the software needs to run including libraries, system tools, code, and runtime. Docker Hub is a registry service provided by Docker for finding and sharing container images.
+
+WORKING STEPS:
+
+1. Create Project:
+Create a new ASP.NET Core Web API project named DockerPractical. Select .NET 6.0 and check Enable Docker.
+
+2. Install Docker Desktop:
+If prompted, install Docker Desktop for Windows. Enable Windows Hypervisor Platform and Windows Subsystem for Linux in Windows Features. Run wsl --update in an admin terminal if needed.
+
+3. Run and Verify:
+Select the Docker profile in Visual Studio and click Play. Open Docker Desktop -> Containers. You will see DockerPractical running.
+
+4. Verify Image:
+Open Command Prompt. Run:
+
+docker images
+
+5. Login to Docker Hub:
+
+docker login
+
+(Enter your Docker Hub username and password).
+
+6. Tag the Image:
+Replace yourusername with your actual Docker Hub username:
+
+docker tag dockerpractical:dev yourusername/dockerpractical
+
+7. Push to Docker Hub:
+
+docker push yourusername/dockerpractical
+
+8. Verify on Docker Hub:
+Go to hub.docker.com -> Repositories. You will see your dockerpractical repository with the image.
+
+9. Pull Image (Simulating Sharing):
+Delete the local image to prove you can download it again:
+
+docker rmi yourusername/dockerpractical:latest
+docker pull yourusername/dockerpractical:latest
+
+COMMON PROBLEMS & SOLUTIONS:
+
+Problem 1: "Docker command failed with exit code 1" / "pipe/dockerDesktopLinuxEngine" not found.
+- Solution: Docker Desktop is not running. Open Docker Desktop from your start menu and wait for the whale icon to stop animating.
+
+Problem 2: "The current user is not in the 'docker-users' group".
+- Solution: Open Command Prompt as Administrator and run: net localgroup docker-users "your-username" /add. Then sign out of Windows and sign back in.
+
+Problem 3: "WSL kernel version too low" error when opening Docker Desktop.
+- Solution: Open Command Prompt or PowerShell as Administrator and run wsl --update. Once the update is complete, restart Docker Desktop.
+
+Problem 4: "Port is already allocated" when running the container.
+- Solution: Another process on your PC is using the port Docker is trying to bind to. Change the port mapping in the docker run command or close the conflicting application.
+
+Problem 5: "denied: requested access to the resource is denied" when pushing.
+- Solution: Ensure you are logged into Docker Hub via docker login. Also, verify that the tag you created exactly matches <yourusername>/dockerpractical. You cannot push an image to another user's repository.
+
+OUTPUT:
+The application successfully builds and runs in a Docker container. The image is tagged, pushed to Docker Hub, and can be pulled back down, demonstrating successful containerization and image sharing.
